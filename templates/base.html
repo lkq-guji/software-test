@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}校园运动场馆预约与计费系统{% endblock %}</title>
+  {% for name in ['variables','base','components','pages'] %}<link rel="stylesheet" href="{{ url_for('static',filename='css/'+name+'.css') }}">{% endfor %}
+  <script src="{{ url_for('static',filename='js/main.js') }}" defer></script>
+  {% block scripts %}{% endblock %}
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  {% include 'components/navbar.html' %}
+  <main id="main-content" class="container">{% block content %}{% endblock %}</main>
+  <footer class="container footer">校园运动场馆预约与计费系统 <span>Campus Venue Reservation System</span></footer>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<header class="navbar">
+  <div class="container nav-inner">
+    <a class="brand" href="{{ url_for('pages.index') }}" data-testid="brand-home">校园场馆<span>预约与计费系统</span></a>
+    <nav aria-label="主要导航">
+      {% for endpoint,label,testid in [('index','首页','nav-home'),('venues','场馆列表','nav-venues'),('create_booking','创建预约','nav-create-booking'),('my_bookings','我的预约','nav-my-bookings'),('statistics','场馆统计','nav-statistics')] %}
+      <a href="{{ url_for('pages.'+endpoint) }}" data-testid="{{ testid }}" {% if request.endpoint == 'pages.'+endpoint %}aria-current="page"{% endif %}>{{ label }}</a>
+      {% endfor %}
+    </nav>
+    <form class="user-switch" method="post" action="{{ url_for('pages.switch_user') }}" data-testid="user-switch-form">
+      <label for="current-user">当前测试用户</label>
+      <select id="current-user" class="form-control" name="user_id" data-testid="current-user-select">
+        {% for user in test_users %}<option value="{{ user.user_id }}" {% if current_user and user.user_id == current_user.user_id %}selected{% endif %}>{{ user.user_id }} {{ user.name }}（{{ role_labels[user.role] }}）</option>{% endfor %}
+      </select>
+      <input type="hidden" name="next" value="{{ request.path }}">
+      <button type="submit" class="btn btn-small" data-testid="switch-user-submit">切换</button>
+    </form>
+  </div>
+</header>

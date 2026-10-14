@@ -1,0 +1,30 @@
+"""统一维护需求规定的输入范围、业务常量和有效状态。"""
+
+USER_ID_LENGTH = (8, 12)
+VIOLATION_COUNT_RANGE = (0, 5)
+CAPACITY_RANGE = (1, 30)
+BASE_RATE_RANGE = (10, 200)
+START_HOUR_RANGE = (8, 21)
+DURATION_RANGE = (1, 4)
+PARTICIPANTS_RANGE = (1, 30)
+DAILY_BOOKING_COUNT_RANGE = (0, 2)
+CANCEL_HOURS_RANGE = (0, 168)
+STAT_DAYS_RANGE = (1, 31)
+TOP_N_RANGE = (1, 10)
+UTILIZATION_THRESHOLD_RANGE = (0, 100)
+OPEN_HOUR = 8
+CLOSE_HOUR = 22
+HOURS_PER_DAY = CLOSE_HOUR - OPEN_HOUR
+DAILY_BOOKING_LIMIT = 2
+VIOLATION_LIMIT = 3
+PEAK_START_HOUR = 18
+PEAK_MULTIPLIER = "1.20"
+NORMAL_MULTIPLIER = "1.00"
+ROLE_DISCOUNTS = {"student": "0.90", "teacher": "0.85"}
+HALF_REFUND_HOURS = 2
+FULL_REFUND_HOURS = 24
+VALID_ROLES = frozenset(ROLE_DISCOUNTS)
+VALID_USER_STATUSES = frozenset({"active", "suspended"})
+VALID_VENUE_TYPES = frozenset({"badminton", "table_tennis", "basketball"})
+VALID_BOOKING_STATUSES = frozenset({"confirmed", "cancelled", "completed", "no_show"})
+EFFECTIVE_BOOKING_STATUSES = frozenset({"confirmed", "completed"})

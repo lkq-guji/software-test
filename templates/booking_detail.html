@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% from 'components/field_error.html' import field_error with context %}
+{% block scripts %}<script src="{{ url_for('static',filename='js/booking.js') }}" defer></script>{% endblock %}
+{% block content %}
+<div class="page-head"><h1>预约详情</h1><p>{{ booking.booking_id }} · {{ booking.venue.name }}</p></div>
+{% if success %}{% include 'booking_success.html' %}{% endif %}
+{% include 'components/alert.html' %}
+<section class="card details" data-testid="booking-detail">
+  <div class="detail-top"><h2>{{ booking.venue.name }}</h2>{% include 'components/status_badge.html' %}</div>
+  <dl class="detail-grid">{% for label,value in [('预约编号',booking.booking_id),('用户编号',booking.user_id),('预约用户',booking.user.name),('场馆编号',booking.venue_id),('日期',booking.date),('开始时间',booking.start_hour|hour),('结束时间',booking.end_hour|hour),('时长',booking.duration|string+' 小时'),('参与人数',booking.participants|string+' 人'),('原始费用',booking.raw_fee|money),('最终费用',booking.fee|money),('退款金额',booking.refund|money)] %}<div><dt>{{ label }}</dt><dd data-testid="detail-{{ loop.index }}">{{ value }}</dd></div>{% endfor %}</dl>
+</section>
+{% if booking.status == 'cancelled' %}<section class="alert alert-success" role="status" data-testid="cancel-success"><strong>预约已取消</strong><p>该预约已取消 · 退款金额：<span data-testid="refund-amount">{{ booking.refund|money }}</span></p></section>{% endif %}
+{% if booking.status == 'confirmed' %}
+<section class="card cancellation" aria-labelledby="cancel-title"><h2 id="cancel-title">取消预约与退款</h2><p class="muted">先查看预计退款，再确认取消。开始时间：{{ booking.date }} {{ booking.start_hour|hour }}</p>
+  <form method="post" action="{{ url_for('pages.cancel_preview',booking_id=booking.booking_id) }}" novalidate data-testid="cancel-preview-form">
+    <div class="inline-form"><div class="form-group"><label for="cancel-hours">距离开始还有（小时）</label><input class="form-control" type="number" id="cancel-hours" name="hours_before_start" min="{{ limits.CANCEL_HOURS_RANGE[0] }}" max="{{ limits.CANCEL_HOURS_RANGE[1] }}" step="any" value="{{ hours }}" data-testid="cancel-hours"><p class="hint">0～168 小时，可填写小数以检查内部边界。</p>{{ field_error('hours_before_start') }}</div><button type="submit" class="btn" data-testid="cancel-booking">查看退款并取消</button></div>
+    <div class="boundary-shortcuts" aria-label="退款边界快捷值"><span>边界快捷值</span>{% for hour in [1,2,3,23,24,25] %}<button class="btn btn-small" type="button" data-hours="{{ hour }}" data-testid="refund-boundary-{{ hour }}">{{ hour }} 小时</button>{% endfor %}</div>
+  </form>
+  {% if preview %}<div class="cancel-confirm" data-testid="cancel-confirmation"><h3>确认取消预约</h3><dl class="detail-grid"><div><dt>提前时间</dt><dd>{{ preview.hours_before_start }} 小时</dd></div><div><dt>预计退款比例</dt><dd data-testid="refund-ratio">{{ '%.2f'|format(preview.refund_ratio*100) }}%</dd></div><div><dt>预计退款金额</dt><dd data-testid="refund-preview">{{ preview.refund|money }}</dd></div></dl><form method="post" action="{{ url_for('pages.cancel_booking',booking_id=booking.booking_id) }}" data-testid="confirm-cancel-form"><input type="hidden" name="hours_before_start" value="{{ hours }}"><button class="btn btn-danger" type="submit" data-testid="confirm-cancel">确认取消</button><a class="btn" href="{{ url_for('pages.booking_detail',booking_id=booking.booking_id) }}" data-testid="cancel-return">返回</a></form></div>{% endif %}
+</section>
+{% endif %}
+<div class="action-row"><a class="btn" href="{{ url_for('pages.my_bookings') }}" data-testid="detail-my-bookings">查看我的预约</a><a href="{{ url_for('pages.create_booking') }}" data-testid="detail-continue">继续预约</a></div>
+{% endblock %}

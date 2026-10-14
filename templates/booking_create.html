@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% from 'components/field_error.html' import field_error with context %}
+{% block scripts %}<script src="{{ url_for('static',filename='js/booking.js') }}" defer></script>{% endblock %}
+{% block content %}
+<div class="page-head"><h1>创建预约</h1><p>选好场馆和时段，提交后查看实际费用。</p></div>
+{% set error_title='预约失败' %}{% include 'components/alert.html' %}
+<div class="booking-layout">
+  <form class="card booking-form" method="post" novalidate data-testid="booking-form" data-busy-label="正在提交...">
+    <div class="form-group"><label for="booking-user">预约用户</label><input class="form-control" id="booking-user" name="user_id" value="{{ current_user.user_id if current_user else '' }}" readonly data-testid="booking-user"><p class="hint">{{ current_user.name if current_user else '' }} · {{ role_labels[current_user.role] if current_user else '' }}</p>{{ field_error('user_id') }}</div>
+    <div class="form-group"><label for="venue-id">场馆</label><select id="venue-id" name="venue_id" class="form-control" data-testid="venue-select">
+      {% if values.get('venue_id') not in venues|map(attribute='venue_id')|list %}<option value="{{ values.get('venue_id','') }}" selected>{{ values.get('venue_id','') or '请选择场馆' }}</option>{% endif %}
+      {% for venue in venues %}<option value="{{ venue.venue_id }}" data-capacity="{{ venue.capacity }}" data-rate="{{ venue.base_rate|money }}" {% if values.get('venue_id') == venue.venue_id %}selected{% endif %}>{{ venue.name }} · {{ venue.venue_id }}</option>{% endfor %}
+    </select><p class="hint" id="venue-hint" data-testid="venue-hint">选择场馆后显示容量和基础费率。</p>{{ field_error('venue_id') }}</div>
+    <div class="form-row"><div class="form-group"><label for="booking-date">预约日期</label><input type="date" id="booking-date" name="date" value="{{ values.get('date','') }}" class="form-control" data-testid="booking-date">{{ field_error('date') }}</div>
+    <div class="form-group"><label for="start-hour">开始时间</label><select id="start-hour" name="start_hour" class="form-control" data-testid="start-hour-select">
+      {% if values.get('start_hour') not in start_hours %}<option selected value="{{ values.get('start_hour','') }}">{{ values.get('start_hour','') or '请选择时间' }}</option>{% endif %}
+      {% for hour in start_hours %}<option value="{{ hour }}" {% if values.get('start_hour') == hour %}selected{% endif %}>{{ hour|int|hour }}</option>{% endfor %}</select>{{ field_error('start_hour') }}</div></div>
+    <div class="form-row"><div class="form-group"><label for="duration">预约时长（小时）</label><input type="number" id="duration" name="duration" min="{{ limits.DURATION_RANGE[0] }}" max="{{ limits.DURATION_RANGE[1] }}" step="1" value="{{ values.get('duration','') }}" class="form-control" data-testid="duration-input"><p class="hint">预约时长：1～4 小时</p>{{ field_error('duration') }}</div>
+    <div class="form-group"><label for="participants">参与人数</label><input type="number" id="participants" name="participants" min="{{ limits.PARTICIPANTS_RANGE[0] }}" max="{{ limits.PARTICIPANTS_RANGE[1] }}" step="1" value="{{ values.get('participants','') }}" class="form-control" data-testid="participants-input"><p class="hint">1～30 人，且不能超过所选场馆容量</p>{{ field_error('participants') }}</div></div>
+    <button type="submit" id="submit-booking" class="btn btn-primary" data-testid="submit-booking">提交预约</button>
+  </form>
+  <aside class="booking-help"><h2>预约须知</h2><dl><dt>开放时段</dt><dd>08:00 - 22:00，按整点预约</dd><dt>每日预约</dt><dd>每人每天最多 2 个有效预约</dd><dt>费用说明</dt><dd>18:00 起高峰系数 1.20<br>学生折扣 0.90，教师折扣 0.85</dd><dt>退款说明</dt><dd>提前至少 24 小时全额退款<br>提前 2 小时至不足 24 小时退款 50%<br>不足 2 小时不退款</dd></dl><p class="hint">提交后显示明确的预约结果，所有判定均由后端完成。</p></aside>
+</div>
+{% endblock %}

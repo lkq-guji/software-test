@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-head split-head"><div><h1>我的预约</h1><p>查看已预约的时段、费用和退款状态。</p></div><a class="btn btn-primary" href="{{ url_for('pages.create_booking') }}" data-testid="list-create">创建预约</a></div>
+<div class="card table-wrap" data-testid="booking-list">
+{% if bookings %}<table class="table"><caption class="visually-hidden">当前用户的全部预约</caption><thead><tr>{% for label in ['预约编号','场馆','日期','时间','时长','人数','费用','退款','状态','操作'] %}<th scope="col">{{ label }}</th>{% endfor %}</tr></thead><tbody>
+  {% for booking in bookings %}<tr data-testid="booking-row" data-booking-id="{{ booking.booking_id }}"><td>{{ booking.booking_id }}</td><td>{{ venue_names.get(booking.venue_id,booking.venue_id) }}</td><td>{{ booking.date }}</td><td>{{ booking.start_hour|hour }} - {{ (booking.start_hour+booking.duration)|hour }}</td><td>{{ booking.duration }}h</td><td>{{ booking.participants }}</td><td>{{ booking.fee|money }}</td><td>{{ booking.refund|money }}</td><td>{% include 'components/status_badge.html' %}</td><td><a href="{{ url_for('pages.booking_detail',booking_id=booking.booking_id) }}" data-testid="booking-detail-{{ booking.booking_id }}">详情</a></td></tr>{% endfor %}
+</tbody></table>{% else %}<div class="empty-state" data-testid="bookings-empty"><h2>暂无预约记录。</h2><p>选一个场馆，安排你的下一场运动。</p><a class="btn btn-primary" href="{{ url_for('pages.create_booking') }}" data-testid="first-booking">创建第一个预约</a></div>{% endif %}
+</div>
+{% endblock %}

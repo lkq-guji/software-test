@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-head"><h1>场馆列表</h1><p>选择适合的运动场馆，查看容量、费率与开放时间。</p></div>
+<nav class="filter-tabs" aria-label="场馆类型筛选">
+  {% for value,label in [('', '全部'),('badminton','羽毛球'),('table_tennis','乒乓球'),('basketball','篮球')] %}<a href="{{ url_for('pages.venues',venue_type=value) }}" data-testid="venue-filter-{{ value or 'all' }}" {% if category == value %}aria-current="true"{% endif %}>{{ label }}</a>{% endfor %}
+</nav>
+<div class="venue-grid">{% for venue in venues %}{% include 'components/venue_card.html' %}{% else %}<div class="empty-state" data-testid="venues-empty">暂无符合筛选条件的场馆。</div>{% endfor %}</div>
+{% endblock %}

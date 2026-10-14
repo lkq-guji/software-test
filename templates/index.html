@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-head home-head"><div><h1>校园运动场馆预约与计费系统</h1><p>快速查询场馆、创建预约、查看费用和统计信息。</p></div><a class="btn btn-primary" href="{{ url_for('pages.create_booking') }}" data-testid="home-create">立即预约</a></div>
+<section class="overview card" aria-label="系统概览" data-testid="home-overview">
+  {% for key,label in [('venue_count','场馆总数'),('my_effective_bookings','我的有效预约'),('today_bookings','今日有效预约'),('today_hours','今日预约小时')] %}<div><span>{{ label }}</span><strong data-testid="overview-{{ key }}">{{ overview[key] }}</strong></div>{% endfor %}
+</section>
+<div class="section-head"><div><h2>选择今天的运动场馆</h2><p class="muted">开放时间 08:00 - 22:00 · 统计日期 {{ today }}</p></div><a href="{{ url_for('pages.venues') }}" data-testid="home-venues">查看全部场馆</a></div>
+<div class="venue-grid">{% for venue in venues %}{% include 'components/venue_card.html' %}{% endfor %}</div>
+<section class="quick-links" aria-label="快捷操作"><a href="{{ url_for('pages.my_bookings') }}" data-testid="home-my-bookings">查看我的预约</a><a href="{{ url_for('pages.statistics') }}" data-testid="home-statistics">查看场馆统计</a></section>
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% from 'components/field_error.html' import field_error with context %}
+{% block scripts %}<script src="{{ url_for('static',filename='js/statistics.js') }}" defer></script>{% endblock %}
+{% block content %}
+<div class="page-head"><h1>场馆统计</h1><p>按日期范围查看有效预约、净收入与使用率。</p></div>
+{% set error_testid='statistics-error' %}{% include 'components/alert.html' %}
+<form method="get" class="card statistics-form" novalidate data-testid="statistics-form" data-busy-label="正在生成...">
+  <div class="form-group"><label for="statistics-start">起始日期</label><input class="form-control" type="date" id="statistics-start" name="start_date" value="{{ values.get('start_date','') }}" data-testid="statistics-start">{{ field_error('date') }}</div>
+  {% for field,label,testid,bounds,default in [('days','统计天数','statistics-days',limits.STAT_DAYS_RANGE,'7'),('top_n','Top-N','statistics-top-n',limits.TOP_N_RANGE,'5'),('min_utilization_percent','最低使用率（%）','statistics-threshold',limits.UTILIZATION_THRESHOLD_RANGE,'50')] %}<div class="form-group"><label for="{{ testid }}">{{ label }}</label><input class="form-control" type="number" id="{{ testid }}" name="{{ field }}" min="{{ bounds[0] }}" max="{{ bounds[1] }}" step="1" value="{{ values.get(field,default) }}" data-testid="{{ testid }}"><p class="hint">{{ bounds[0] }}～{{ bounds[1] }}</p>{{ field_error(field) }}</div>{% endfor %}
+  <button type="submit" class="btn btn-primary" data-testid="statistics-submit">生成统计</button>
+</form>
+{% if report %}
+<section class="overview card" aria-label="统计概览">{% for label,value,testid in [('总有效预约数',report.total_bookings,'total-bookings'),('总预约小时数',report.total_booked_hours,'total-hours'),('总收入',report.total_revenue|money,'total-revenue'),('平均使用率','%.2f%%'|format(report.utilization_percent),'total-utilization')] %}<div><span>{{ label }}</span><strong data-testid="{{ testid }}">{{ value }}</strong></div>{% endfor %}</section>
+{% if report.total_bookings == 0 %}<div class="empty-notice" data-testid="statistics-empty">当前统计范围内没有有效预约。</div>{% endif %}
+<section class="card table-wrap"><table class="table" data-testid="statistics-table"><caption>各场馆使用情况</caption><thead><tr><th scope="col">场馆</th><th scope="col">有效预约数</th><th scope="col">已预约小时</th><th scope="col">收入</th><th scope="col">使用率</th></tr></thead><tbody>{% for row in report.venues %}<tr data-testid="statistics-row" data-venue-id="{{ row.venue_id }}"><td>{{ row.name }} <span class="muted">{{ row.venue_id }}</span></td><td>{{ row.booking_count }}</td><td>{{ row.booked_hours }}</td><td>{{ row.revenue|money }}</td><td>{{ '%.2f'|format(row.utilization_percent) }}%</td></tr>{% endfor %}</tbody></table></section>
+<div class="report-columns"><section><h2>预约次数 Top {{ values.get('top_n','5') }}</h2><ol class="ranking" data-testid="statistics-top-list">{% for row in report.top_venues %}<li data-testid="top-venue-{{ row.venue_id }}"><span>{{ row.name }}</span><strong>{{ row.booking_count }} 次</strong></li>{% else %}<li class="muted">暂无有效预约。</li>{% endfor %}</ol></section><section><h2>使用率 ≥ {{ values.get('min_utilization_percent','50') }}%</h2><ul class="ranking" data-testid="statistics-filtered-list">{% for row in report.filtered_venues %}<li data-testid="filtered-venue-{{ row.venue_id }}"><span>{{ row.name }}</span><strong>{{ '%.2f'|format(row.utilization_percent) }}%</strong></li>{% else %}<li class="muted">暂无达到阈值的场馆。</li>{% endfor %}</ul></section></div>
+{% endif %}
+{% endblock %}

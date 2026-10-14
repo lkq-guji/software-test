@@ -1,0 +1,1 @@
+{% macro field_error(field) %}{% if error and error.field == field %}<p class="field-error" id="error-{{ field }}" role="alert" data-testid="field-error">{{ error.code }}：{{ error.message }}</p>{% endif %}{% endmacro %}

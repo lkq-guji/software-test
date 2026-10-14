@@ -1,0 +1,29 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--background); color: var(--text); font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif; font-size: 15px; line-height: 1.6; }
+a { color: var(--primary); text-decoration-thickness: 1px; text-underline-offset: 4px; }
+a:hover { color: var(--primary-hover); }
+button, input, select { font: inherit; }
+button, select { cursor: pointer; }
+input { caret-color: var(--primary); }
+::selection { background: #c6ddf3; color: var(--text); }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+h1,h2,h3,p { margin-top: 0; }
+h1 { font-size: clamp(25px,2.5vw,32px); line-height: 1.35; margin-bottom: 10px; font-weight: 700; }
+h2 { font-size: 21px; line-height: 1.4; margin-bottom: 16px; }
+h3 { font-size: 19px; line-height: 1.5; }
+p { max-width: 75ch; }
+.container { width: min(calc(100% - 48px),var(--content-width)); margin-inline: auto; }
+main { min-height: 72vh; padding-block: 36px 52px; }
+.muted,.hint { color: var(--muted); }
+.hint { font-size: 13px; margin: 7px 0 0; }
+.footer { border-top: 1px solid var(--border); padding-block: 22px 30px; color: var(--muted); font-size: 13px; display: flex; justify-content: space-between; gap: 16px; }
+.page-head { margin-bottom: 26px; }
+.page-head p { color: var(--muted); margin-bottom: 0; }
+.split-head,.home-head,.section-head { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+.section-head { margin: 38px 0 20px; }
+.section-head h2 { margin-bottom: 6px; }
+.section-head p { margin-bottom: 0; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.skip-link { position: absolute; top: -100px; left: 24px; padding: 12px; background: var(--surface); z-index: 10; }
+.skip-link:focus { top: 12px; }
+@media(max-width: 767px) { .container { width: calc(100% - 32px); } main { padding-block: 26px 38px; } .home-head,.split-head,.section-head { align-items: flex-start; flex-direction: column; gap: 16px; } .footer { flex-direction: column; gap: 4px; } }

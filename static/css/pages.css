@@ -1,0 +1,51 @@
+.overview { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); padding: 24px 28px; gap: 24px; }
+.overview span { display: block; font-size: 14px; color: var(--muted); }
+.overview strong { display: block; font-size: 29px; margin-top: 6px; font-weight: 600; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.venue-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px; }
+.venue-card { padding: 24px; }
+.venue-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; font-size: 13px; }
+.venue-type { color: var(--primary); font-weight: 600; }
+.venue-card h3 { margin-bottom: 12px; }
+.venue-price { font-size: 28px; font-weight: 600; margin-bottom: 20px; font-variant-numeric: tabular-nums; }
+.venue-price span { font-size: 13px; color: var(--muted); font-weight: 400; }
+.venue-facts { margin-bottom: 24px; font-size: 14px; }
+.venue-facts div { display: flex; justify-content: space-between; padding-block: 5px; }
+dt { color: var(--muted); }
+dd { margin: 0; }
+.venue-card .btn { width: 100%; }
+.venue-actions { display: flex; gap: 10px; }
+.venue-actions .btn { padding-inline: 10px; }
+.quick-links { display: flex; gap: 28px; margin-top: 28px; }
+.filter-tabs { display: flex; gap: 10px; margin: 0 0 24px; }
+.filter-tabs a { padding: 8px 20px; border-radius: 6px; text-decoration: none; }
+.filter-tabs a[aria-current] { color: #fff; background: var(--primary); }
+.booking-layout { display: grid; grid-template-columns: minmax(0,730px) minmax(200px,1fr); gap: 44px; }
+.booking-form { padding: 30px; }
+.form-row { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+.booking-help { padding-block: 8px; }
+.booking-help dl dt { font-weight: 600; color: var(--text); margin-top: 22px; }
+.booking-help dd { color: var(--muted); margin-top: 7px; font-size: 14px; line-height: 1.8; }
+.booking-help .hint { margin-top: 28px; }
+.details,.cancellation { padding: 28px 30px; margin-bottom: 24px; }
+.detail-top { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; }
+.detail-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px; margin: 12px 0 0; }
+.detail-grid dt { font-size: 13px; margin-bottom: 4px; }
+.detail-grid dd { font-weight: 600; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.inline-form { display: flex; gap: 18px; align-items: flex-start; margin-top: 24px; }
+.inline-form .form-group { width: min(100%,330px); }
+.inline-form > .btn { margin-top: 31px; }
+.boundary-shortcuts { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.boundary-shortcuts > span { font-size: 13px; color: var(--muted); margin-right: 8px; }
+.cancel-confirm { padding-top: 28px; margin-top: 28px; border-top: 1px solid var(--border); }
+.cancel-confirm form { margin-top: 24px; display: flex; gap: 12px; }
+.action-row { display: flex; gap: 20px; align-items: center; }
+.statistics-form { display: grid; grid-template-columns: 1.3fr 1fr 1fr 1fr auto; align-items: start; gap: 20px; padding: 24px; margin-bottom: 24px; }
+.statistics-form .form-group { margin-bottom: 0; }
+.statistics-form .btn { margin-top: 30px; }
+.statistics-form + .overview { margin-bottom: 24px; }
+.empty-notice { margin: 18px 0 24px; color: var(--muted); }
+.report-columns { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 44px; margin-top: 34px; }
+.ranking { padding: 0; list-style: none; }
+.ranking li { display: flex; justify-content: space-between; gap: 16px; padding: 13px 0; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+@media(max-width: 1000px) { .booking-layout { gap: 28px; grid-template-columns: minmax(0,2fr) minmax(200px,1fr); } .statistics-form { grid-template-columns: repeat(2,minmax(0,1fr)); } .statistics-form .btn { margin-top: 0; justify-self: start; } .venue-card { padding: 20px; } }
+@media(max-width: 767px) { .overview { grid-template-columns: repeat(2,minmax(0,1fr)); padding: 22px; } .venue-grid { grid-template-columns: 1fr; } .booking-layout { grid-template-columns: 1fr; } .booking-form,.details,.cancellation { padding: 22px; } .form-row { grid-template-columns: 1fr; gap: 0; } .booking-help { padding-inline: 4px; } .detail-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } .inline-form { flex-direction: column; gap: 0; } .inline-form > .btn { margin-top: 0; margin-bottom: 18px; } .report-columns { grid-template-columns: 1fr; gap: 20px; } .filter-tabs a { padding: 8px 13px; } }

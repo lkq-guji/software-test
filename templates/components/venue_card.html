@@ -1,0 +1,7 @@
+<article class="card venue-card" id="venue-{{ venue.venue_id }}" data-testid="venue-card" data-venue-id="{{ venue.venue_id }}">
+  <div class="venue-heading"><span class="venue-type">{{ type_labels[venue.venue_type] }}</span><span class="muted">{{ venue.venue_id }}</span></div>
+  <h3>{{ venue.name }}</h3>
+  <p class="venue-price">{{ venue.base_rate|money }}<span> / 小时</span></p>
+  <dl class="venue-facts"><div><dt>容纳人数</dt><dd>{{ venue.capacity }} 人</dd></div><div><dt>开放时间</dt><dd>{{ venue.open_hour|hour }} - {{ venue.close_hour|hour }}</dd></div></dl>
+  <div class="venue-actions"><a class="btn" href="{{ url_for('pages.venue_detail',venue_id=venue.venue_id) }}" data-testid="venue-detail-{{ venue.venue_id }}">查看详情</a><a class="btn btn-primary" href="{{ url_for('pages.create_booking',venue_id=venue.venue_id) }}" data-testid="book-venue-{{ venue.venue_id }}">预约此场馆</a></div>
+</article>

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="page-head"><h1>{{ venue.name }}</h1><p>场馆详情 · {{ venue.venue_id }}</p></div>
+<section class="card details" data-testid="venue-detail"><dl class="detail-grid">
+  <div><dt>场馆编号</dt><dd>{{ venue.venue_id }}</dd></div>
+  <div><dt>运动类型</dt><dd>{{ type_labels[venue.venue_type] }}</dd></div>
+  <div><dt>容量</dt><dd>{{ venue.capacity }} 人</dd></div>
+  <div><dt>基础费率</dt><dd>{{ venue.base_rate|money }} / 小时</dd></div>
+  <div><dt>开放时间</dt><dd>{{ venue.open_hour|hour }} - {{ venue.close_hour|hour }}</dd></div>
+</dl></section>
+<div class="action-row"><a class="btn btn-primary" href="{{ url_for('pages.create_booking',venue_id=venue.venue_id) }}" data-testid="book-venue-{{ venue.venue_id }}">预约此场馆</a><a href="{{ url_for('pages.venues') }}" data-testid="venue-back">返回场馆列表</a></div>
+{% endblock %}
